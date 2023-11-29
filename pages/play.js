@@ -8,6 +8,7 @@ import styles from "../styles/play.module.css";
 const Play = () => {
   const router = useRouter();
   const { teamA, teamB } = router.query;
+  const matchOver = 1
   const options = ["Bat", "Bowl"];
   const teams = [teamA, teamB];
   const [tossTeam, setTossTeam] = useState("");
@@ -20,12 +21,14 @@ const Play = () => {
   const [ponitToNextBatsman, setPointToNextBatsman] = useState(2);
   const [currentBowlerIndex, setCurrentBowlerIndex] = useState(10);
   const [overs, setOvers] = useState(0);
-  const [bowlCount, setBowlCount] = useState([]);
-  const [target, setTarget] = useState(0);
+  const [bowlCount, setBowlCount] = useState(0);
+  const [target, setTarget] = useState(null);
   const [totalRuns, setTotalRuns] = useState(0);
   const [wickets, setWickets] = useState(0);
   const [score, setScore] = useState(null);
-  const randomScores = [0, 1, 2, 3, 4, 6, "Wide", "NoBall", "W"];
+  const[overStat,setOverStat] = useState([])
+  const [matchResult,setMatchResult] = useState(null);
+  const randomScores = [0, 1, 2, 3, 4, 6, "WD", "NB", "W"];
 
   const [currentBatsman, setCurrentBatsman] = useState({
     strikeBatsman: {},
@@ -38,7 +41,20 @@ const Play = () => {
     lastBowler: {},
   });
   const [state, dispatch] = useStat();
-
+  function teamSwitch(){
+    const newBowlTeam = batTeam;
+    setBatTeam(bowlTeam);
+    setBowlTeam(newBowlTeam);
+    setTarget(totalRuns+1);
+    setScore(null);
+    setTotalRuns(0);
+    setCurrentBowlerIndex(10);
+    setTotalRuns(0);
+    setOverStat([]);
+    setBowlCount(0);
+    setOvers(0);
+    setWickets(0)
+  }
   useEffect(() => {
     const teamWinningToss = Math.floor(Math.random() * teams.length);
     console.log("teamWiningToss", teams[teamWinningToss]);
@@ -84,10 +100,11 @@ const Play = () => {
   }, [batTeam, bowlTeam]);
 
   useEffect(()=>{
-    if(bowlCount.length===6){
+    if(bowlCount===6&&   totalRuns<target){
         setTimeout(()=>{
 
-            setBowlCount([])
+            setOverStat([]);
+            setBowlCount(0)
             setOvers(overs+1);
 
         },800)
@@ -95,7 +112,22 @@ const Play = () => {
     }
     if(typeof (score)==='number'){
 
+      
         setCurrentBatsman((prevBatsmanState) => {
+            const strike = {...prevBatsmanState.strikeBatsman};
+            if(score%2===1&&bowlCount<6||score%2===0&&bowlCount===6){
+              strike.runs = strike.runs+score;
+              console.log('score and bowlCount',score,bowlCount)
+              return{
+                ...prevBatsmanState,
+                strikeBatsman:{
+                  ...prevBatsmanState.nonStrikeBatsman
+                },
+                nonStrikeBatsman:{
+                  ...strike
+                }
+              }
+            }
             return {
               ...prevBatsmanState,
               strikeBatsman: {
@@ -107,16 +139,96 @@ const Play = () => {
 
     }
     setScore(null)
-  },[score,bowlCount.length])
+  },[score,bowlCount])
+  
+  useEffect(()=>{
+    if(wickets>0&&wickets<=9){
+      setPointToNextBatsman(ponitToNextBatsman+1)
+     }
+     if((overs===matchOver||wickets===10)&&target===null){
+      //  const newBowlTeam = batTeam;
+      //  setBatTeam(bowlTeam);
+      //  setBowlTeam(newBowlTeam);
+      //  setTarget(totalRuns);
+      //  setScore(0);
+      //  setTotalRuns(0);
+      //  setCurrentBowlerIndex(10);
+      //  setTotalRuns(0);
+      teamSwitch();
+     }
 
+     else if(overs===matchOver||wickets===10){
+       if(totalRuns<target){
+          setMatchResult(`${bowlTeam} has won the match by ${target-totalRuns} runs`);
+       }
+     }
+    if(overs>0){
+      setCurrentBowlerIndex(currentBowlerIndex-1);
+    }
+
+    if(currentBowlerIndex===6){
+      setCurrentBowlerIndex(10);
+    }
+  },[overs,wickets])
+  useEffect(()=>{
+    if(currentBowlerIndex<10&&(target!==null&&totalRuns<target)){
+      setCurrentBowler({
+        bolwer: players[bowlTeam][currentBowlerIndex],
+      });
+    }
+  },[currentBowlerIndex])
+
+
+     
   const handleBowling = () => {
     const randomIndex = Math.floor(Math.random() * randomScores.length);
-    console.log('on handleBowling',randomScores[randomIndex])
-    setScore(randomScores[randomIndex]);
-    setBowlCount((prevBowlCount) => [...prevBowlCount, randomScores[randomIndex]], () => {
-        console.log('Bowl count updated:', bowlCount);
+    console.log('on handleBowling',randomScores[randomIndex]);
+    setOverStat((prevOverStat) => [...prevOverStat, randomScores[randomIndex]], () => {
+        console.log('Bowl count updated:', overStat);
       });
+    if(randomScores[randomIndex]==='WD'||randomScores[randomIndex]==='NB'){
+      setTotalRuns(totalRuns+1);
+      return;
+    }
+    setScore(randomScores[randomIndex]);
+
+      if(typeof randomScores[randomIndex]==='number'){
+        setTotalRuns(totalRuns+randomScores[randomIndex])
+      }
+      if(typeof randomScores[randomIndex]==='number'||randomScores[randomIndex]==='W'){
+        setBowlCount(bowlCount+1);
+      }
+
+      if(randomScores[randomIndex]==='W'){
+        setWickets(wickets+1);
+      }
   };
+
+
+
+  useEffect(()=>{
+    if(ponitToNextBatsman>2){
+      setCurrentBatsman((prevBatsmanState) => {
+        //const strike = {...prevBatsmanState.strikeBatsman};
+          return{
+            ...prevBatsmanState,
+            strikeBatsman:{
+              ...prevBatsmanState.nonStrikeBatsman
+            },
+            nonStrikeBatsman:{
+              ...players[batTeam][ponitToNextBatsman]
+            }
+          }
+      });
+
+    }
+  },[ponitToNextBatsman])
+
+  useEffect(()=>{
+   if(target<=totalRuns&&target!==null){
+    setMatchResult(`${batTeam} has won the match by ${10-wickets} wickets`)
+   }   
+  },[totalRuns])
 
   console.log("state on play.js", state);
   return (
@@ -126,7 +238,7 @@ const Play = () => {
           <h4>Scorecard</h4>
           <div className={styles.scoreDetails}>
             <p className={styles.totalScore}>
-              {batTeam}: {totalRuns}/{wickets} overs:{overs}.{bowlCount.length}
+              {batTeam}: {totalRuns}/{wickets} overs:{overs}.{bowlCount}
             </p>
 
             <p className={styles.strike}>
@@ -138,21 +250,31 @@ const Play = () => {
               {currentBatsman?.nonStrikeBatsman?.runs}
             </p>
           </div>
+          <div className={styles.target}>
+            {target?(
+             <p>Target: {target}</p>
+            ):null}
+          </div>
+          <div className={styles.result}>
+            {matchResult?(
+             <p>{matchResult}</p>
+            ):null}
+          </div>
         </div>
 
         <div className={styles.batting}>
-          <button>Bat</button>
+          <button onClick={handleBowling}disabled={matchResult!==null}>Bat</button>
         </div>
 
         <div className={styles.bolwer}>
           <h4>{currentBowler.bolwer.name}</h4>
           <div className={styles.bowlCount}>
-          {bowlCount.map((bowl) => (
-              <h5>{bowl}</h5>
+          {overStat.map((stat) => (
+              <h5>{stat}</h5>
           ))}
             </div>
           <div className={styles.bowl}>
-            <button onClick={handleBowling}>Bowl</button>
+            <button onClick={handleBowling} disabled={matchResult!==null}>Bowl</button>
           </div>
         </div>
       </div>
