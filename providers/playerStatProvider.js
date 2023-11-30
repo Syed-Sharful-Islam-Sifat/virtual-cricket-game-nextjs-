@@ -13,13 +13,20 @@ export const StatProvider = ({children})=>{
       players:[
 
       ],
-      teamA:{
+      batFirstTeam:{
         runs: 0,
-        wicketsFallen:0
+        wicketsFallen:0,
+        overs:0,
+        country:''
       },
-      teamB:{
+      batSecondTeam:{
         runs:0,
-        wicketsFallen:0
+        wicketsFallen:0,
+        overs:0,
+        country:''
+      },
+      matchResult:{
+
       }
     })
 
