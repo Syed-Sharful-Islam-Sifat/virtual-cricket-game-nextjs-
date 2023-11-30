@@ -1,0 +1,44 @@
+.matchSummaryContainer {
+    background-color: #3498db;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    padding: 20px;
+    margin: 10px;
+  
+  }
+  
+  .matchSummaryHeading {
+    display: flex;
+    justify-content: center;
+    background-color: #5fa3b7; /* Nice teal-like background color */
+    color: #fff; /* White text color */
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Light shadow effect */
+    width: 40%;
+  }
+
+  .summaryHeadingContainer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+
+.result {
+    display: flex;
+    justify-content: center;
+    background-color: #4caf50; /* Green background for result */
+    color: #fff; /* White text color */
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    width: 40%;
+  }
+
+  .resultContainer{
+    margin-top: 1%;
+     display: flex;
+     justify-content: center;
+  }

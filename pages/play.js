@@ -192,11 +192,7 @@ const Play = () => {
     const randomIndex = Math.floor(Math.random() * randomScores.length);
     console.log("on handleBowling", randomScores[randomIndex]);
     setOverStat(
-      (prevOverStat) => [...prevOverStat, randomScores[randomIndex]],
-      () => {
-        console.log("Bowl count updated:", overStat);
-      }
-    );
+(prevOverStat) => [...prevOverStat, randomScores[randomIndex]]);
     if (
       randomScores[randomIndex] === "WD" ||
       randomScores[randomIndex] === "NB"
@@ -311,8 +307,8 @@ const Play = () => {
           <div className={styles.bowler}>
             <h4>{currentBowler.bolwer.name}</h4>
             <div className={styles.bowlCount}>
-              {overStat.map((stat) => (
-                <p key={stat}>{stat}</p>
+              {overStat.map((stat,i) => (
+                <p key={i}>{stat}</p>
               ))}
             </div>
           </div>

@@ -6,7 +6,7 @@ export default function TeamSelect({team , opponent , handleTeamSelect}) {
    const[selectedTeam,setSelectedTeam] = useState('');
 
   const handleSelectChange = (e) => {
-   
+    
     handleTeamSelect(e.target.value,team);
   };
   console.log('team and opponent',team,opponent);

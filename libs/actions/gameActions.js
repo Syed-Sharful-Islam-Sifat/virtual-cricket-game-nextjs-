@@ -1,7 +1,9 @@
 const gameActions = {
-    SET_PLAYERS: async(payload,state,dispatch)=>{
+    SET_PLAYERS: (payload,state,dispatch)=>{
 
         const {playersTeamA,playersTeamB,teamA,teamB} = payload;
+        console.log('players of team A',playersTeamA);
+        console.log('players of team B',playersTeamB)
         console.log('teamA teamB',playersTeamA,playersTeamB)
         const newState = {...state};
         newState.players = [...playersTeamA,...playersTeamB];
@@ -9,7 +11,7 @@ const gameActions = {
             ...newState
         }
     },
-    ADD_EXTRA_RUN: async(payload,state,dispatch)=>{
+    ADD_EXTRA_RUN: (payload,state,dispatch)=>{
 
         const {batTeam} = payload;
         const newState = {...state};
@@ -25,7 +27,7 @@ const gameActions = {
         }
     },
     
-    ADD_WICKETS: async(payload,state,dispatch)=>{
+    ADD_WICKETS: (payload,state,dispatch)=>{
       const { batsmanId,bowlerId ,batTeam} = payload;
       const batsmanIndex = state.players.findIndex(player => player.id === batsmanId);
       const bowlerIndex = state.players.findIndex(player => player.id === bowlerId);
@@ -34,11 +36,6 @@ const gameActions = {
         ...state.players[batsmanIndex],
         ballPlayed:state.players[batsmanIndex]?.ballPlayed + 1,
       };
-
-   
-
-      
-      
       
       const newState = {
         ...state,
@@ -67,8 +64,10 @@ const gameActions = {
 
           if(batTeam===finalState.batFirstTeam.country){
              finalState.batFirstTeam.overs =   finalState.batFirstTeam.overs + 1;
+             finalState.batFirstTeam.wicketsFallen = finalState.batFirstTeam.wicketsFallen + 1;
           }else{
             finalState.batSecondTeam.overs =   finalState.batSecondTeam.overs + 1;
+            finalState.batSecondTeam.wicketsFallen = finalState.batSecondTeam.wicketsFallen + 1;
           }
           
           return{
@@ -79,7 +78,7 @@ const gameActions = {
   
 
     },
-    SET_BATTING_TEAM: async(payload,state,dispatch)=>{
+    SET_BATTING_TEAM: (payload,state,dispatch)=>{
         
       const {batFirstTeam,batSecondTeam} = payload;
      
@@ -91,7 +90,7 @@ const gameActions = {
       }
        
     },
-    RESULT_FIXED: async(payload,state,dispatch)=>{
+    RESULT_FIXED: (payload,state,dispatch)=>{
         
       const {matchResult} = payload;
      
@@ -102,7 +101,7 @@ const gameActions = {
       }
        
     },
-    ADD_BOWL: async(payload,state,dispatch)=>{
+    ADD_BOWL: (payload,state,dispatch)=>{
         
       const { playerId } = payload;
      
@@ -132,7 +131,7 @@ const gameActions = {
     
     
 
-    ADD_RUN: async(payload,state,dispatch)=>{
+    ADD_RUN: (payload,state,dispatch)=>{
       const { batsmanId,bowlerId ,batTeam , score} = payload;
       const batsmanIndex = state.players.findIndex(player => player.id === batsmanId);
       const bowlerIndex = state.players.findIndex(player => player.id === bowlerId);

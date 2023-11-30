@@ -11,8 +11,8 @@ const MatchSummary = () => {
   const [batsmanBatSecond, setBatsmanBatSecond] = useState([]);
   const [bowlerBatFirst, setBowlerBatFirst] = useState([]);
   const [bowlerBatSecond, setBowlerBatSecond] = useState([]);
-  let overPlayedByBatFirst = (state.batFirstTeam.overs/6)
-  let ballPlayedByBatFirst = (overPlayedByBatFirst*6);
+  let overPlayedByBatFirst = (state.batFirstTeam.overs / 6)
+  let ballPlayedByBatFirst = (overPlayedByBatFirst * 6);
   ballPlayedByBatFirst = state.batFirstTeam.overs - ballPlayedByBatFirst;
   const firstBattingTeam = state.batFirstTeam.country;
   const secondBattingTeam = state.batSecondTeam.country;
@@ -59,14 +59,22 @@ const MatchSummary = () => {
 
   return (
     <div className={styles.matchSummaryContainer}>
-      <div className={styles.matchSummary_heading}>
-        <h2>Match Summary</h2>
+      <div className={styles.summaryHeadingContainer}>
+        <div className={styles.matchSummaryHeading}>
+          <h3>Match Summary</h3>
+        </div>
       </div>
       <div className={styles.batFirstTeam}>
-        <TeamSummary team={batsmanBatFirst} ball={ballPlayedByBatFirst}/>
+        <TeamSummary battingTeam={batsmanBatFirst}  bowlingTeam = {bowlerBatSecond} team={state.batFirstTeam}/>
       </div>
       <div className={styles.bowlFirstTeam}>
-        <TeamSummary team={batsmanBatSecond} ball={ballPlayedByBatFirst}/>
+        <TeamSummary battingTeam={batsmanBatSecond} bowlingTeam={bowlerBatFirst} team={state.batSecondTeam}/>
+      </div>
+
+      <div className={styles.resultContainer}>
+        <div className={styles.result}>
+          <h4>{state.matchResult}</h4>
+        </div>
       </div>
     </div>
   );
