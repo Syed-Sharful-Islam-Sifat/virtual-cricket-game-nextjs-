@@ -76,3 +76,24 @@
   font-size: 18px;
   font-weight: bold;
 }
+
+@media (max-width: 768px) {
+  .team_players {
+    grid-template-columns: 1fr;
+  }
+
+  .teamSelect {
+    width: 80%;
+  }
+
+  .toss button {
+    padding: 10px 15px; /* Adjust to your needs */
+    font-size: 14px; /* Adjust to your needs */
+  }
+
+  .playerListA,
+  .playerListB {
+    padding: 10px;
+    font-size: 16px; /* Adjust to your needs */
+  }
+}

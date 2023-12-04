@@ -26,7 +26,7 @@
   
   /* Score Card Styles */
   .scoreCard {
-    background-color: #ecf0f1; /* Light grey background */
+    background-color: #233142;  /* Light grey background */
     padding: 20px;
     width: 100%;
     margin-bottom: 20px;
@@ -140,6 +140,14 @@
   
   .summaryLink button:hover {
     background-color: #219653;
+  }
+
+  .scoreCard h4{
+    color: white;
+  }
+
+  .scoreCard p{
+    color: white;
   }
 
 

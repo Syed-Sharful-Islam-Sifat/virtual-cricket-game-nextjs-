@@ -188,6 +188,28 @@ const gameActions = {
     
     },
 
+    SET_STATE:(payload,state,dispatch)=>{
+     
+      return{
+    players: [],
+    batFirstTeam: {
+      runs: 0,
+      wicketsFallen: 0,
+      overs: 0,
+      country: '',
+    },
+    batSecondTeam: {
+      runs: 0,
+      wicketsFallen: 0,
+      overs: 0,
+      country: '',
+    },
+    matchResult: {},
+
+      }
+    
+    }
+
     
 }
 

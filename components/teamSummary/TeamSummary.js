@@ -51,19 +51,19 @@ const TeamSummary = ({ battingTeam, bowlingTeam, team }) => {
 
             <div className={styles.bowlerScore}>
               <h5>
-                {bowlingTeam[0]?.name}  {bowlingTeam[0]?.runsGiven}/ {bowlingTeam[0]?.wickets}
+                {bowlingTeam[0]?.name}  {bowlingTeam[0]?.runGiven} / {bowlingTeam[0]?.wickets}
               </h5>
             </div>
 
             <div className={styles.bowlerScore}>
               <h5>
-              {bowlingTeam[1]?.name} / {bowlingTeam[1]?.wickets}
+              {bowlingTeam[1]?.name} { bowlingTeam[1]?.runGiven} / {bowlingTeam[1]?.wickets}
               </h5>
             </div>
 
             <div className={styles.bowlerScore}>
               <h5>
-              {bowlingTeam[2]?.name} / {bowlingTeam[2]?.wickets}
+              {bowlingTeam[2]?.name}  { bowlingTeam[2]?.runGiven} / {bowlingTeam[2]?.wickets}
               </h5>
             </div>
 
